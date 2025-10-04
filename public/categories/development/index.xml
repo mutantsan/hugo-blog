@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Development on Oleksandr Ch.</title>
+    <link>http://localhost:1313/categories/development/</link>
+    <description>Recent content in Development on Oleksandr Ch.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <managingEditor>mutantsan@gmail.com (Oleksandr Ch.)</managingEditor>
+    <webMaster>mutantsan@gmail.com (Oleksandr Ch.)</webMaster>
+    <copyright>© 2025 Oleksandr Ch.</copyright>
+    <lastBuildDate>Sat, 04 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Blowfish Theme Feature Test</title>
+      <link>http://localhost:1313/blog/blofwish-theme-test/</link>
+      <pubDate>Sat, 04 Oct 2025 00:00:00 +0000</pubDate>
+      <author>mutantsan@gmail.com (Oleksandr Ch.)</author>
+      <guid>http://localhost:1313/blog/blofwish-theme-test/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Exploring Hugo Features</title>
+      <link>http://localhost:1313/blog/markdown-layout-test/</link>
+      <pubDate>Sat, 04 Oct 2025 00:00:00 +0000</pubDate>
+      <author>mutantsan@gmail.com (Oleksandr Ch.)</author>
+      <guid>http://localhost:1313/blog/markdown-layout-test/</guid>
+      <description></description>
+      
+    </item>
+    
+  </channel>
+</rss>
