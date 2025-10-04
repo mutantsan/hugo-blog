@@ -11,23 +11,20 @@ This blog is where I share my thoughts, experiments, and notes—mostly around s
 
 ## What I Do
 I’m a developer with a focus on building practical tools and exploring ideas that make data, code, and technology more approachable. Some of my interests include:
-- **Software development** — from backend systems to frontend interactions.
-- **Open source** — contributing, learning, and publishing tools others can use.
-- **Astronomy & science** — I enjoy looking up and learning about the universe.
+- **Software Development** — from backend systems to frontend interactions.
+- **Open Source** — contributing, learning, and publishing tools others can use.
+- **Open Data** — making data accessible and useful for everyone.
 
 ## Why This Blog
 I started this blog as a way to:
 - Keep track of what I learn.
 - Share knowledge with others who might face the same challenges.
 - Have a personal space on the web that’s truly mine.
+- But really, **I just wanted to play around with Hugo framework and its themes**.
 
 ## Outside of Work
 When I’m not coding or tinkering with projects, you’ll probably find me:
-- Reading about astronomy and space exploration.
+- Playing video games (especially RPGs and metroidvanias).
+- Reading sci-fi and fantasy novels and manga.
 - Learning new languages (human ones as well as programming).
 - Exploring new ideas and technologies just for fun.
-
----
-
-Thanks for stopping by!
-If you’d like to connect, feel free to reach out on [GitHub](https://github.com/) or [LinkedIn](https://www.linkedin.com/) — or just drop me a message through the site.
