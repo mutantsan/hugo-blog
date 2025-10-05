@@ -9,7 +9,6 @@ categories: ["Development"]
 This post is a playground for testing various features of Hugo and the Blowfish theme.
 I’m using it to verify formatting, layouts, and content elements before I publish regular articles.
 
-Test update from the GH UI
 ---
 
 ## Code Snippets
