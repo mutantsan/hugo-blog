@@ -1,5 +1,4 @@
 ---
-layout: simple
 title: "Exploring Hugo Features"
 date: 2025-10-04
 draft: false
