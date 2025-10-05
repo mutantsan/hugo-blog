@@ -6,8 +6,6 @@ tags: ["hugo", "blowfish", "theme", "testing"]
 categories: ["Development"]
 ---
 
-# Blowfish Theme Feature Test 🐟
-
 This post is dedicated to testing the **Blowfish theme capabilities** in Hugo.
 It’s designed to cover formatting, special blocks, tabs, footnotes, and embeds.
 
