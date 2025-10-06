@@ -29,7 +29,7 @@ This is an error!
 
 ## Carousel
 
-{{< carousel images="gallery/*" interval="10000" >}}
+{{< carousel images="{gallery/*}" interval="0" >}}
 
 ## Code Importer
 
@@ -132,3 +132,16 @@ flowchart TD
     E --> F
     F --> G[Celebrate Your Journey]
 {{< /mermaid >}}
+
+
+## TypeIt
+
+{{< typeit tag=h2 lifeLike=true loop=true >}}
+Серьога, привіт. Це звернення для тебе.
+Якщо ти це бачиш, то ти пес.
+{{< /typeit >}}
+
+
+## Youtube
+
+{{< youtube id="dQw4w9WgXcQ" title="Never Gonna Give You Up" >}}
