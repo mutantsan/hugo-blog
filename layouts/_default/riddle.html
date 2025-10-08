@@ -24,7 +24,6 @@
             font-size: 1rem;
             min-height: 100vh;
             background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-            overflow: hidden;
             color: white;
             display: flex;
             justify-content: center;
@@ -117,8 +116,8 @@
         }
 
         .code-input input {
-            width: 50px;
-            height: 60px;
+            width: 35px;
+            height: 40px;
             font-size: 2rem;
             text-align: center;
             border: 2px solid #fff;
@@ -603,14 +602,14 @@
         }
 
         .bq-container {
-            width: 590px;
+            width: 410px;
             margin: 1rem 0 2rem 0;
             position: relative;
         }
 
         blockquote {
-            width: 565px;
-            font: 2.65em CallunaRegular;
+            width: 400px;
+            font: 2em CallunaRegular;
             letter-spacing: .075em;
             float: left;
             padding: 45px 0 30px 25px;
@@ -623,7 +622,7 @@
 
         .bq-container:before {
             content: "“";
-            font-size: 13em;
+            font-size: 7em;
             position: absolute;
             left: -100px;
             color: white;
@@ -775,6 +774,7 @@
 
             if (foundCodes.includes(code)) {
                 errorMessage.textContent = 'Цей код вже знайдений.';
+                Array.from(inputs).map(i => i.value = '');
                 return;
             }
 
@@ -786,7 +786,7 @@
                 }
                 Array.from(inputs).map(i => i.value = '');
                 errorMessage.textContent = ''; // clear error on success
-                console.log("HEY")
+                inputs[0].focus();
             } else {
                 errorMessage.textContent = 'Невірний код. Спробуй ще раз.';
             }
