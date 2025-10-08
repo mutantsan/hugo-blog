@@ -55,8 +55,8 @@
         }
 
         #infoDialog {
-            font-family: 'Times New Roman', Times, serif;
-            border: 4px solid white;
+            font-family: "EB Garamond", serif;
+            border: 2px solid white;
             border-radius: 12px;
             background-color: #000;
             color: white;
@@ -65,11 +65,16 @@
             max-width: 400px;
         }
 
+        #infoDialog div {
+            display: flex;
+            justify-content: right;
+        }
+
         #infoDialog button {
             cursor: pointer;
             border: unset;
             color: white;
-            font-size: 2rem;
+            font-size: 1.5rem;
             background-color: unset;
             border-bottom: dotted 4px white;
         }
@@ -595,9 +600,7 @@
         }
 
         .quote--author {
-            font-family: 'Open Sans Condensed';
             text-align: right;
-            font-weight: 300;
         }
     </style>
 </head>
@@ -616,7 +619,10 @@
             <p>3. Оглядай предмети та місця уважно.</p>
 
             <p>Нехай щастить!</p>
-            <button onclick="this.parentElement.close()">Зрозуміло!</button>
+
+            <div>
+                <button onclick="infoDialog.close()">Зрозуміло!</button>
+            </div>
         </dialog>
 
         <div class="quote--container">
@@ -652,7 +658,9 @@
         ];
 
         // make first clue always available
-        localStorage.setItem('foundCodes', JSON.stringify(["19302"]));
+        if (!localStorage.getItem('foundCodes')) {
+            localStorage.setItem('foundCodes', JSON.stringify(["19302"]));
+        }
 
         const cluesContainer = document.getElementById('clues');
         const form = document.getElementById('riddle-form');
