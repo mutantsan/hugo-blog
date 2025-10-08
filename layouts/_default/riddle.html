@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ .Title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg: #f3f4f6;
+            --text: #1f2937;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Great Vibes', serif;
+            font-style: normal;
+            font-size: 1rem;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 999;
+        }
+
+        #infoDialog-btn {
+            border: unset;
+            border-bottom: dotted 4px white;
+            color: white;
+            font-size: 2rem;
+            background-color: unset;
+            cursor: pointer;
+        }
+
+        #infoDialog-btn:hover {
+            color: gold;
+            border-bottom-color: gold;
+            transition: all 0.3s;
+        }
+
+        #infoDialog {
+            font-family:'Times New Roman', Times, serif;
+            border: 4px solid white;
+            border-radius: 12px;
+            background-color: #000;
+            color: white;
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            max-width: 400px;
+        }
+
+        #infoDialog button {
+            cursor: pointer;
+            border: unset;
+            color: white;
+            font-size: 2rem;
+            background-color: unset;
+            border-bottom: dotted 4px white;
+        }
+
+        #infoDialog button:hover {
+            color: gold;
+            border-bottom-color: gold;
+            transition: all 0.3s;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        blockquote {
+            font-size: 1.4em;
+            width: 60%;
+            margin: 50px auto;
+            font-family: Open Sans;
+            font-style: italic;
+            color: #555555;
+            padding: 1.2em 30px 1.2em 75px;
+            border-left: 8px solid #78C0A8;
+            line-height: 1.6;
+            position: relative;
+            background: #EDEDED;
+        }
+
+        form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #riddle-form {
+            margin: 1rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .code-input input {
+            width: 50px;
+            height: 60px;
+            font-size: 2rem;
+            text-align: center;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .code-input input:focus {
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .error-message {
+            text-align: center;
+            margin-top: 10px;
+            min-height: 1.2em;
+            font-size: 1.5rem;
+        }
+
+        #clues {
+            max-width: 700px;
+            background: linear-gradient(#29292959, #e2f2ff00);
+            border-radius: 8px;
+            color: goldenrod;
+        }
+
+        #clues clue:last-of-type {
+            color: white;
+        }
+
+        .clue {
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 2rem;
+        }
+
+        .stars,
+        .stars2,
+        .stars3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 2px;
+            background: transparent;
+        }
+
+        .stars::after,
+        .stars2::after,
+        .stars3::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .stars {
+            box-shadow:
+                50px 80px white, 150px 200px white, 300px 400px white, 600px 100px white,
+                800px 600px white, 1200px 300px white, 1400px 500px white,
+                1600px 700px white, 1800px 900px white, 2000px 1100px white,
+                100px 1400px white, 400px 1300px white, 600px 1600px white;
+            animation: animStar 100s linear infinite;
+        }
+
+        .stars2 {
+            box-shadow:
+                200px 100px white, 400px 500px white, 600px 800px white, 1000px 200px white,
+                1200px 600px white, 1500px 800px white, 1700px 1200px white,
+                1800px 1400px white, 900px 1000px white, 1300px 1600px white;
+            animation: animStar 150s linear infinite;
+        }
+
+        .stars3 {
+            box-shadow:
+                300px 50px white, 700px 400px white, 1000px 800px white, 1400px 200px white,
+                1600px 600px white, 1900px 900px white, 200px 1500px white,
+                500px 1700px white, 800px 1300px white, 1100px 1600px white;
+            animation: animStar 200s linear infinite;
+        }
+
+        @keyframes animStar {
+            from {
+                transform: translateY(0px);
+            }
+
+            to {
+                transform: translateY(-2000px);
+            }
+        }
+    </style>
+
+    <style>
+        .container {
+            --color-0: #fff;
+            --color-1: #111;
+            --color-2: #222;
+            --color-3: #333;
+            --color-4: #2e2e2e;
+            --color-5: #d2b48c;
+            --color-6: #b22222;
+            --color-7: #871a1a;
+            --color-8: #ff6347;
+            --color-9: #ff3814;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-1);
+            background-image: linear-gradient(to top,
+                    var(--color-2) 5%,
+                    var(--color-1) 6%,
+                    var(--color-1) 7%,
+                    transparent 7%),
+                linear-gradient(to bottom, var(--color-1) 30%, transparent 80%),
+                linear-gradient(to right, var(--color-2), var(--color-4) 5%, transparent 5%),
+                linear-gradient(to right,
+                    transparent 6%,
+                    var(--color-2) 6%,
+                    var(--color-4) 9%,
+                    transparent 9%),
+                linear-gradient(to right,
+                    transparent 27%,
+                    var(--color-2) 27%,
+                    var(--color-4) 34%,
+                    transparent 34%),
+                linear-gradient(to right,
+                    transparent 51%,
+                    var(--color-2) 51%,
+                    var(--color-4) 57%,
+                    transparent 57%),
+                linear-gradient(to bottom, var(--color-1) 35%, transparent 35%),
+                linear-gradient(to right,
+                    transparent 42%,
+                    var(--color-2) 42%,
+                    var(--color-4) 44%,
+                    transparent 44%),
+                linear-gradient(to right,
+                    transparent 45%,
+                    var(--color-2) 45%,
+                    var(--color-4) 47%,
+                    transparent 47%),
+                linear-gradient(to right,
+                    transparent 48%,
+                    var(--color-2) 48%,
+                    var(--color-4) 50%,
+                    transparent 50%),
+                linear-gradient(to right,
+                    transparent 87%,
+                    var(--color-2) 87%,
+                    var(--color-4) 91%,
+                    transparent 91%),
+                linear-gradient(to bottom, var(--color-1) 37.5%, transparent 37.5%),
+                linear-gradient(to right,
+                    transparent 14%,
+                    var(--color-2) 14%,
+                    var(--color-4) 20%,
+                    transparent 20%),
+                linear-gradient(to bottom, var(--color-1) 40%, transparent 40%),
+                linear-gradient(to right,
+                    transparent 10%,
+                    var(--color-2) 10%,
+                    var(--color-4) 13%,
+                    transparent 13%),
+                linear-gradient(to right,
+                    transparent 21%,
+                    var(--color-2) 21%,
+                    #1a1a1a 25%,
+                    transparent 25%),
+                linear-gradient(to right,
+                    transparent 58%,
+                    var(--color-2) 58%,
+                    var(--color-4) 64%,
+                    transparent 64%),
+                linear-gradient(to right,
+                    transparent 92%,
+                    var(--color-2) 92%,
+                    var(--color-4) 95%,
+                    transparent 95%),
+                linear-gradient(to bottom, var(--color-1) 48%, transparent 48%),
+                linear-gradient(to right,
+                    transparent 96%,
+                    var(--color-2) 96%,
+                    #1a1a1a 99%,
+                    transparent 99%),
+                linear-gradient(to bottom,
+                    transparent 68.5%,
+                    transparent 76%,
+                    var(--color-1) 76%,
+                    var(--color-1) 77.5%,
+                    transparent 77.5%,
+                    transparent 86%,
+                    var(--color-1) 86%,
+                    var(--color-1) 87.5%,
+                    transparent 87.5%),
+                linear-gradient(to right,
+                    transparent 35%,
+                    var(--color-2) 35%,
+                    var(--color-4) 41%,
+                    transparent 41%),
+                linear-gradient(to bottom, var(--color-1) 68%, transparent 68%),
+                linear-gradient(to right,
+                    transparent 78%,
+                    var(--color-3) 78%,
+                    var(--color-3) 80%,
+                    transparent 80%,
+                    transparent 82%,
+                    var(--color-3) 82%,
+                    var(--color-3) 83%,
+                    transparent 83%),
+                linear-gradient(to right,
+                    transparent 66%,
+                    var(--color-2) 66%,
+                    var(--color-4) 85%,
+                    transparent 85%);
+            background-size: 300px 150px;
+            background-position: center bottom;
+        }
+
+        .container:before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            background-color: var(--color-1);
+            background-image: linear-gradient(to top,
+                    var(--color-5) 5%,
+                    var(--color-1) 6%,
+                    var(--color-1) 7%,
+                    transparent 7%),
+                linear-gradient(to bottom, var(--color-1) 30%, transparent 30%),
+                linear-gradient(to right, var(--color-6), var(--color-7) 5%, transparent 5%),
+                linear-gradient(to right,
+                    transparent 6%,
+                    var(--color-8) 6%,
+                    var(--color-9) 9%,
+                    transparent 9%),
+                linear-gradient(to right,
+                    transparent 27%,
+                    #556b2f 27%,
+                    #39481f 34%,
+                    transparent 34%),
+                linear-gradient(to right,
+                    transparent 51%,
+                    #fa8072 51%,
+                    #f85441 57%,
+                    transparent 57%),
+                linear-gradient(to bottom, var(--color-1) 35%, transparent 35%),
+                linear-gradient(to right,
+                    transparent 42%,
+                    #008080 42%,
+                    #004d4d 44%,
+                    transparent 44%),
+                linear-gradient(to right,
+                    transparent 45%,
+                    #008080 45%,
+                    #004d4d 47%,
+                    transparent 47%),
+                linear-gradient(to right,
+                    transparent 48%,
+                    #008080 48%,
+                    #004d4d 50%,
+                    transparent 50%),
+                linear-gradient(to right,
+                    transparent 87%,
+                    #789 87%,
+                    #4f5d6a 91%,
+                    transparent 91%),
+                linear-gradient(to bottom, var(--color-1) 37.5%, transparent 37.5%),
+                linear-gradient(to right,
+                    transparent 14%,
+                    #bdb76b 14%,
+                    #989244 20%,
+                    transparent 20%),
+                linear-gradient(to bottom, var(--color-1) 40%, transparent 40%),
+                linear-gradient(to right,
+                    transparent 10%,
+                    #808000 10%,
+                    #4d4d00 13%,
+                    transparent 13%),
+                linear-gradient(to right,
+                    transparent 21%,
+                    #8b4513 21%,
+                    #5e2f0d 25%,
+                    transparent 25%),
+                linear-gradient(to right,
+                    transparent 58%,
+                    #8b4513 58%,
+                    #5e2f0d 64%,
+                    transparent 64%),
+                linear-gradient(to right,
+                    transparent 92%,
+                    #2f4f4f 92%,
+                    #1c2f2f 95%,
+                    transparent 95%),
+                linear-gradient(to bottom, var(--color-1) 48%, transparent 48%),
+                linear-gradient(to right,
+                    transparent 96%,
+                    #2f4f4f 96%,
+                    #1c2f2f 99%,
+                    transparent 99%),
+                linear-gradient(to bottom,
+                    transparent 68.5%,
+                    transparent 76%,
+                    var(--color-1) 76%,
+                    var(--color-1) 77.5%,
+                    transparent 77.5%,
+                    transparent 86%,
+                    var(--color-1) 86%,
+                    var(--color-1) 87.5%,
+                    transparent 87.5%),
+                linear-gradient(to right,
+                    transparent 35%,
+                    #cd5c5c 35%,
+                    #bc3a3a 41%,
+                    transparent 41%),
+                linear-gradient(to bottom, var(--color-1) 68%, transparent 68%),
+                linear-gradient(to right,
+                    transparent 78%,
+                    #bc8f8f 78%,
+                    #bc8f8f 80%,
+                    transparent 80%,
+                    transparent 82%,
+                    #bc8f8f 82%,
+                    #bc8f8f 83%,
+                    transparent 83%),
+                linear-gradient(to right,
+                    transparent 66%,
+                    #a52a2a 66%,
+                    #7c2020 85%,
+                    transparent 85%);
+            background-size: 300px 150px;
+            background-position: center bottom;
+            clip-path: circle(150px at center center);
+            animation: flashlight 20s ease infinite;
+        }
+
+        .container:after {
+            content: "";
+            width: 25px;
+            height: 10px;
+            position: absolute;
+            left: calc(50% + 59px);
+            bottom: 100px;
+            background-repeat: no-repeat;
+            background-image: radial-gradient(circle, #fff 50%, transparent 50%),
+                radial-gradient(circle, #fff 50%, transparent 50%);
+            background-size: 10px 10px;
+            background-position:
+                left center,
+                right center;
+            animation: eyes 20s infinite;
+        }
+
+        @keyframes flashlight {
+            0% {
+                clip-path: circle(150px at -25% 10%);
+            }
+
+            38% {
+                clip-path: circle(150px at 60% 20%);
+            }
+
+            39% {
+                opacity: 1;
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            40% {
+                opacity: 0;
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            41% {
+                opacity: 1;
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            42% {
+                opacity: 0;
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            54% {
+                opacity: 0;
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            55% {
+                opacity: 1;
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            59% {
+                opacity: 1;
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            64% {
+                clip-path: circle(150px at 45% 78%);
+            }
+
+            68% {
+                clip-path: circle(150px at 85% 89%);
+            }
+
+            72% {
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            74% {
+                clip-path: circle(150px at 60% 86%);
+            }
+
+            100% {
+                clip-path: circle(150px at 150% 50%);
+            }
+        }
+
+        @keyframes eyes {
+
+            0%,
+            38% {
+                opacity: 0;
+            }
+
+            39%,
+            41% {
+                opacity: 1;
+                transform: scaleY(1);
+            }
+
+            40% {
+                transform: scaleY(0);
+                filter: none;
+                background-image: radial-gradient(circle, #fff 50%, transparent 50%),
+                    radial-gradient(circle, #fff 50%, transparent 50%);
+            }
+
+            41% {
+                transform: scaleY(1);
+                background-image: radial-gradient(circle, #ff0000 50%, transparent 50%),
+                    radial-gradient(circle, #ff0000 50%, transparent 50%);
+                filter: drop-shadow(0 0 4px #ff8686);
+            }
+
+            42%,
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <style>
+        @font-face {
+            font-family: 'Sketch Block';
+            src: url('http://tangledindesign.com/codepen/fonts/sketch_block-webfont.eot');
+            src: url('http://tangledindesign.com/codepen/fonts/sketch_block-webfont.eot?#iefix') format('embedded-opentype'),
+                url('http://tangledindesign.com/codepen/fonts/sketch_block-webfont.woff') format('woff'),
+                url('http://tangledindesign.com/codepen/fonts/sketch_block-webfont.ttf') format('truetype'),
+                url('http://tangledindesign.com/codepen/fonts/sketch_block-webfont.svg#SketchBlockBold') format('svg');
+        }
+
+        @font-face {
+            font-family: 'Museo 700';
+            src: url('http://tangledindesign.com/codepen/fonts/Museo700-Regular-webfont.eot');
+            src: url('http://tangledindesign.com/codepen/fonts/Museo700-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+                url('http://tangledindesign.com/codepen/fonts/Museo700-Regular-webfont.woff') format('woff'),
+                url('http://tangledindesign.com/codepen/fonts/Museo700-Regular-webfont.ttf') format('truetype'),
+                url('http://tangledindesign.com/codepen/fonts/Museo700-Regular-webfont.svg#SketchBlockBold') format('svg');
+        }
+
+        @font-face {
+            font-family: 'CallunaRegular';
+            src: url('http://tangledindesign.com/codepen/fonts/Calluna-Regular-webfont.eot');
+            src: url('http://tangledindesign.com/codepen/fonts/Calluna-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+                url('http://tangledindesign.com/codepen/fonts/Calluna-Regular-webfont.woff') format('woff'),
+                url('http://tangledindesign.com/codepen/fonts/Calluna-Regular-webfont.ttf') format('truetype'),
+                url('http://tangledindesign.com/codepen/fonts/Calluna-Regular-webfont.svg#CallunaRegular') format('svg');
+        }
+
+        .bq-container {
+            width: 590px;
+            margin: 1rem 0 2rem 0;
+            position: relative;
+        }
+
+        blockquote {
+            width: 565px;
+            font: 2.65em CallunaRegular;
+            letter-spacing: .075em;
+            float: left;
+            padding: 45px 0 30px 25px;
+            margin: 0;
+            transform: rotate(-3deg);
+            background: transparent;
+            border-left-color: white;
+            color: white;
+        }
+
+        .bq-container:before {
+            content: "“";
+            font-size: 13em;
+            position: absolute;
+            left: -100px;
+            color: white;
+        }
+
+        .bq-container:after {
+            content: "”";
+            font-size: 13em;
+            position: absolute;
+            right: -100px;
+            top: 150px;
+            color: white;
+        }
+
+        blockquote:first-line {
+            font: 1.85em "Sketch Block";
+            color: #fff79e;
+        }
+
+        blockquote:first-letter {
+            font-size: 2.9em;
+            text-transform: lowercase;
+            float: left;
+            line-height: .52em;
+            margin-right: -18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        blockquote strong:first-child {
+            margin-left: 8px;
+            letter-spacing: 0;
+        }
+
+        blockquote strong:last-child {
+            font: 2em "Museo 700";
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
+
+        blockquote em {
+            border-bottom: 2px dotted #858585;
+            margin-left: 20px;
+        }
+
+        blockquote+b {
+            float: right;
+            margin-top: 10px;
+            font: 1.6em CallunaRegular;
+            letter-spacing: .15em;
+        }
+
+        blockquote+b:first-letter {
+            color: #fff79e;
+            font-size: 1.3em;
+            font-style: italic;
+            letter-spacing: .25em;
+        }
+
+        @-moz-document url-prefix() {
+
+            blockquote:first-letter {
+                margin-top: -29px;
+            }
+
+        }
+    </style>
+</head>
+
+<body class="container">
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <div class="content">
+        <h1>The Riddle Game <button id="infoDialog-btn" onclick="infoDialog.showModal()">?</button></h1>
+
+        <dialog id="infoDialog">
+            <p>1. Введи 5-значний код, щоб відкрити підказку!</p>
+            <p>2. Коди заховані у квартирі. Перша підказка доступна одразу.</p>
+            <p>3. Оглядай предмети та місця уважно.</p>
+
+            <p>Нехай щастить!</p>
+            <button onclick="this.parentElement.close()">Зрозуміло!</button>
+        </dialog>
+
+        <article class="bq-container">
+
+            <blockquote>
+                <strong>Imagination</strong> is <em>more important</em> than <strong>knowledge</strong>
+            </blockquote>
+            <b>Einstein, A.</b>
+
+        </article>
+
+        <form id="riddle-form">
+            <div class="code-input" id="code-input">
+                <input type="text" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off">
+            </div>
+
+            <p id="error-message" class="error-message"></p>
+        </form>
+
+        <ol id="clues"></ol>
+    </div>
+
+    <script>
+        const riddles = [
+            { code: "19302", clue: "Мене лиш відкривають раз на рік. <br> Радіють всі, не дивлячись на вік." },
+            { code: "82015", clue: "Хто нам завжди правду каже? <br> Яким ти є, таким й покаже." },
+            {
+                code: "45127", clue: "Зжирає він усе на світі: <br> Птахів, тварин, дерева, квіти; <br> Гризе залізо, кришить крицю, <br> І камінь змеле на мучицю, <br> Царя вб'є, царгород звоює, <br> Високі гори поруйнує."
+            },
+        ];
+
+        const cluesContainer = document.getElementById('clues');
+        const form = document.getElementById('riddle-form');
+        const codeInput = document.getElementById('code');
+        const errorMessage = document.getElementById('error-message');
+        const inputs = document.querySelectorAll('#code-input input');
+        const foundCodes = JSON.parse(localStorage.getItem('foundCodes') || '[]');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                input.value = input.value.replace(/\D/, ''); // only digits
+                if (input.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                checkCode();
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        function checkCode() {
+            const code = Array.from(inputs).map(i => i.value).join('');
+            const riddle = riddles.find(r => r.code === code);
+
+            if (foundCodes.includes(code)) {
+                errorMessage.textContent = 'Цей код вже знайдений.';
+                return;
+            }
+
+            if (riddle) {
+                if (!foundCodes.includes(code)) {
+                    foundCodes.push(code);
+                    localStorage.setItem('foundCodes', JSON.stringify(foundCodes));
+                    renderClues();
+                }
+                Array.from(inputs).map(i => i.value = '');
+                errorMessage.textContent = ''; // clear error on success
+                console.log("HEY")
+            } else {
+                errorMessage.textContent = 'Невірний код. Спробуй ще раз.';
+            }
+        }
+
+        function renderClues() {
+            cluesContainer.innerHTML = '';
+            riddles.forEach(r => {
+                if (foundCodes.includes(r.code)) {
+                    const li = document.createElement('li');
+                    li.className = 'clue';
+                    li.innerHTML = r.clue;
+                    cluesContainer.appendChild(li);
+                }
+            });
+        }
+
+        renderClues();
+    </script>
+
+</body>
+
+</html>
