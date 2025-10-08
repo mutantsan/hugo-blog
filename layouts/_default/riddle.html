@@ -148,10 +148,6 @@
             color: goldenrod;
         }
 
-        #clues clue:last-of-type {
-            color: white;
-        }
-
         .clue {
             padding: 1rem;
             border-radius: 6px;
@@ -706,7 +702,7 @@
         <h1>The Riddle Game <button id="infoDialog-btn" onclick="infoDialog.showModal()">?</button></h1>
 
         <dialog id="infoDialog">
-            <p>1. Введи 5-значний код, щоб відкрити підказку!</p>
+            <p>1. Введи 5-значний код, щоб відкрити підказку де захований наступний код.</p>
             <p>2. Коди заховані у квартирі. Перша підказка доступна одразу.</p>
             <p>3. Оглядай предмети та місця уважно.</p>
 
@@ -747,12 +743,15 @@
             },
         ];
 
+        // make first clue always available
+        localStorage.setItem('foundCodes', JSON.stringify(["19302"]));
+
         const cluesContainer = document.getElementById('clues');
         const form = document.getElementById('riddle-form');
         const codeInput = document.getElementById('code');
         const errorMessage = document.getElementById('error-message');
         const inputs = document.querySelectorAll('#code-input input');
-        const foundCodes = JSON.parse(localStorage.getItem('foundCodes') || '[]');
+        const foundCodes = JSON.parse(localStorage.getItem('foundCodes'));
 
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
