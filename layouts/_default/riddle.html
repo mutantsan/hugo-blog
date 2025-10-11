@@ -21,7 +21,6 @@
 
         body {
             margin: 0;
-            font-family: 'Great Vibes', serif;
             font-style: normal;
             font-size: 1rem;
             min-height: 100vh;
@@ -86,6 +85,7 @@
         }
 
         h1 {
+            font-family: 'Great Vibes', serif;
             font-size: 2rem;
             margin-bottom: 1rem;
         }
@@ -149,7 +149,7 @@
 
         #clues {
             max-width: 700px;
-            background: linear-gradient(#29292959, #e2f2ff00);
+            background: #29292959;
             border-radius: 8px;
             color: goldenrod;
         }
@@ -157,7 +157,7 @@
         .clue {
             padding: 1rem;
             border-radius: 6px;
-            font-size: 2rem;
+            font-size: 1.5rem;
         }
 
         .stars,
@@ -632,7 +632,6 @@
             <p class="quote--author">&ndash; Einstein, A</p>
         </div>
 
-
         <form id="riddle-form">
             <div class="code-input" id="code-input">
                 <input type="text" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off">
@@ -647,19 +646,21 @@
 
         <ol id="clues"></ol>
     </div>
-
     <script>
         const riddles = [
-            { code: "19302", clue: "Мене лиш відкривають раз на рік. <br> Радіють всі, не дивлячись на вік." },
-            { code: "82015", clue: "Хто нам завжди правду каже? <br> Яким ти є, таким й покаже." },
+            { code: "12345", clue: "Між дев’яткою та десяткою — шлях від очей прихований.", hint: "Уму розуму я вчу, а сама завжди мовчу." },
+            { code: "44179", clue: "Хто нам завжди правду каже? <br> Яким ти є, таким й покаже.", hint: "Воно таке у нас не одне" },
+            { code: "91987", clue: "Я бував далеко, хоч і не лелека", hint: "Зберігає спогади про мандри." },
             {
-                code: "45127", clue: "Зжирає він усе на світі: <br> Птахів, тварин, дерева, квіти; <br> Гризе залізо, кришить крицю, <br> І камінь змеле на мучицю, <br> Царя вб'є, царгород звоює, <br> Високі гори поруйнує."
+                code: "38552", clue: "Зжирає він усе на світі: <br> Птахів, тварин, дерева, квіти; <br> Гризе залізо, кришить крицю, <br> І камінь змеле на мучицю, <br> Царя вб'є, царгород звоює, <br> Високі гори поруйнує.", hint: "Ця загадка з книги Хоббіт"
             },
+            { code: "79112", clue: "Мене лиш відкривають раз на рік. <br> Радіють всі, не дивлячись на вік.", hint: "Ялинка" },
+
         ];
 
         // make first clue always available
         if (!localStorage.getItem('foundCodes')) {
-            localStorage.setItem('foundCodes', JSON.stringify(["19302"]));
+            localStorage.setItem('foundCodes', JSON.stringify(["12345"]));
         }
 
         const cluesContainer = document.getElementById('clues');
@@ -716,6 +717,7 @@
                     const li = document.createElement('li');
                     li.className = 'clue';
                     li.innerHTML = r.clue;
+                    li.innerHTML += `<br><details style="color: white"><summary>Підказка</summary>${r.hint}</details>`;
                     cluesContainer.appendChild(li);
                 }
             });
