@@ -1,0 +1,24 @@
+disabled = false
+languageCode = "uk"
+languageName = "Ukrainian"
+weight = 1
+title = "Oleksandr Ch."
+
+[params]
+  displayName = "UA"
+  isoCode = "ukr"
+  rtl = false
+  dateFormat = "2 January 2006"
+
+[params.author]
+  name = "Oleksandr Ch."
+  email = "mutantsan@gmail.com"
+  image = "https://avatars.githubusercontent.com/u/55234934?v=4"
+  imageQuality = 96
+  headline = "Software Engineer"
+  bio = "Open-source enthusiast, developer, and lifelong learner."
+  links = [
+    { email = "mailto:mutantsan@gmail.com" },
+    { github = "https://github.com/mutantsan" },
+    { linkedin = "https://www.linkedin.com/in/oleksandr-c-a0a63318a/" },
+  ]
