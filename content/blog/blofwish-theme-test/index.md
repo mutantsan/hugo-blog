@@ -1,7 +1,7 @@
 ---
 title: "Blowfish Theme Feature Test"
 date: 2025-10-05
-draft: false
+draft: true
 tags: ["hugo", "blowfish", "theme", "testing"]
 categories: ["Development"]
 ---
