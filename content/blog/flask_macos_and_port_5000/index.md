@@ -35,7 +35,7 @@ netstat -an | grep 5000
 ```
 
 Output:
-```
+```sh
 tcp6       0      0  *.5000                 *.*                    LISTEN
 tcp4       0      0  *.5000                 *.*                    LISTEN
 tcp4       0      0  127.0.0.1.5000         *.*                    LISTEN
@@ -48,7 +48,7 @@ lsof -i :5000
 ```
 
 Output:
-```
+```sh
 COMMAND    PID   USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 ControlCe  697 cherry   11u  IPv4  0xcb15211adc8f0f6      0t0  TCP *:commplex-main (LISTEN)
 ControlCe  697 cherry   12u  IPv6 0xb8560ad8849d6df3      0t0  TCP *:commplex-main (LISTEN)
