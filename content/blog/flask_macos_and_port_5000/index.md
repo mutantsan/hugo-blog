@@ -4,6 +4,7 @@ date: 2025-10-25
 draft: false
 tags: ["flask", "macos"]
 categories: ["Development"]
+showComments: false
 ---
 
 # Debugging Port 5000 Conflicts on macOS: When AirPlay Hijacks Your Development Server
@@ -18,7 +19,7 @@ But here's where it got weird: even after the server started successfully, the p
 
 My first thought was browser caching, maybe it cached the error page? But I'd never experienced that behavior before, and it seemed unlikely.
 
-![403 error](403.png)
+![403 error](images/403.png)
 
 > In hindsight, a 403 error is pretty unusual when trying to access a server that should be down 🙂.
 
