@@ -1,3 +1,11 @@
+body {
+    --container-7xl: 100rem;
+}
+
 .main-menu {
     padding: 0 !important;
+}
+
+.article-content.max-w-prose {
+    max-width: unset;
 }
