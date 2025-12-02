@@ -6,6 +6,6 @@ body {
     padding: 0 !important;
 }
 
-.article-content.max-w-prose {
+#main-content .max-w-prose {
     max-width: unset;
 }
