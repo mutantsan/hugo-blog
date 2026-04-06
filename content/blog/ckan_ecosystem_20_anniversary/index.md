@@ -7,7 +7,23 @@ categories: ["Development", "CKAN"]
 showComments: true
 ---
 
+<style>
+    .ckan-repo-badge {
+        padding: 5rem
+    }
+
+    @media (max-width: 970px) {
+        .ckan-repo-badge {
+            padding: 1rem
+        }
+    }
+</style>
+
 # The CKAN Ecosystem at 20: Extensions, Evolution, and the Long Tail
+
+<div class="ckan-repo-badge">
+    {{< github repo="ckan/ckan" showThumbnail=true >}}
+</div>
 
 Can you imagine—version 0.1 of CKAN was released all the way back in 2006. And who could have imagined that such a long journey lay ahead. I'll admit, I wasn't around to witness CKAN in those days—I was still in school. Fortunately, the topic of this article, namely the CKAN ecosystem, allows us to jump a bit forward in time.
 
@@ -53,6 +69,18 @@ This kind of replacement cycle is not accidental but reflects a broader ecosyste
 
 In that same spirit, newer work such as `ckanext-tables` continues this trajectory. It explores new approaches to tabular data presentation and may, over time, either replace or reshape how `datatablesview` is used. Whether it becomes a successor or simply another specialized option is less important than the underlying pattern: the ecosystem continuously iterates through overlapping implementations until a more effective abstraction stabilizes.
 
+{{< mermaid >}}
+graph LR
+    subgraph "Tabular data preview"
+        B1["reclineview (~2012)"] --> B2["datatablesview (2017)"]
+        B2 --> B3["tables (2024)"]
+    end
+
+    style B1 fill:#d3d1c7,stroke:#5f5e5a,color:#2c2c2a
+    style B2 fill:#9fe1cb,stroke:#0f6e56,color:#04342c
+    style B3 fill:#cecbf6,stroke:#534ab7,color:#26215c
+{{< /mermaid >}}
+
 ## Evolving Data Import Mechanisms
 
 Another area where this evolution is particularly visible is data ingestion into the DataStore. Over time, CKAN has moved from a single, core-driven approach toward a more diverse ecosystem of tools, each reflecting different priorities.
@@ -62,6 +90,20 @@ Back in 2014, with the release of version 2.2, CKAN introduced DataPusher—a bu
 As the ecosystem matured, however, performance and scalability demands led to new approaches. The emergence of `ckanext-xloader` in 2017 reflected this shift. Designed as a replacement for DataPusher, it prioritized speed and reliability, offering dramatically faster imports for large datasets while remaining relatively simple in scope.
 
 More recently, `datapusher-plus` has taken the idea further by combining the strengths of both predecessors. It retains the performance characteristics of XLoader while reintroducing and extending DataPusher's schema inference capabilities. In addition, it enables more advanced workflows, such as suggesting metadata through the formulas defined in the dataset schema.
+
+{{< mermaid >}}
+graph LR
+    subgraph "Data ingestion"
+        A1["datastorer (~2012)"] --> A2["DataPusher (2014)"]
+        A2 --> A3["xloader (2017)"]
+        A3 --> A4["datapusher-plus (2021)"]
+    end
+
+    style A1 fill:#d3d1c7,stroke:#5f5e5a,color:#2c2c2a
+    style A2 fill:#9fe1cb,stroke:#0f6e56,color:#04342c
+    style A3 fill:#9fe1cb,stroke:#0f6e56,color:#04342c
+    style A4 fill:#cecbf6,stroke:#534ab7,color:#26215c
+{{< /mermaid >}}
 
 Seen in the broader context of CKAN's evolution, these tools illustrate a recurring pattern: core functionality establishes a baseline, but innovation increasingly happens in extensions. Data ingestion, once a single built-in mechanism, has become a space where multiple solutions coexist—each pushing the boundaries of performance, flexibility, and intelligence in different ways.
 
@@ -113,6 +155,18 @@ Alongside these established tools, a new wave of extensions is actively reshapin
 
 In content management, `ckanext-blocksmith` (2025–present) represents a shift away from simple static page editing toward more flexible, component-based layouts, effectively bringing lightweight CMS capabilities into CKAN. In a similar space, `ckanext-content` comes to replace legacy extensions like `ckanext-pages` and `ckanext-showcase` with a schema-driven, configurable solution that supports custom content types, translations, file uploads, templating, and URL aliasing.
 
+{{< mermaid >}}
+graph LR
+    subgraph "Content management"
+        C1["pages (~2014)"] --> C2["blocksmith (2025)"]
+        C1 --> C3["content (2025)"]
+    end
+
+    style C1 fill:#d3d1c7,stroke:#5f5e5a,color:#2c2c2a
+    style C2 fill:#cecbf6,stroke:#534ab7,color:#26215c
+    style C3 fill:#cecbf6,stroke:#534ab7,color:#26215c
+{{< /mermaid >}}
+
 Visualization is also being revisited. `ckanext-charts` (2024–present) builds on earlier efforts like `basiccharts` but introduces a more modern and maintainable approach to chart rendering and integration with datasets.
 
 Operational tooling is another area where new extensions are emerging. `ckanext-selfinfo` provides a consolidated, in-UI diagnostics and monitoring layer for CKAN instances, exposing system metrics, configuration state, installed extensions, and runtime errors directly to administrators. It reduces reliance on external logs by centralizing operational visibility within the platform itself.
@@ -120,6 +174,10 @@ Operational tooling is another area where new extensions are emerging. `ckanext-
 In a similar direction, `ckanext-admin-panel` represents a broader attempt to rethink CKAN's administrative experience. Rather than exposing scattered configuration screens and CLI-driven workflows, it introduces a more cohesive administrative interface that brings together user management, system monitoring, extension management, and log inspection into a single UI. The extension is positioned as a "next-generation admin interface," aiming to make routine operational tasks more accessible and centralized. It also introduces additional capabilities like runtime configuration editing, effectively turning the admin panel into an extensible control layer for CKAN itself.
 
 Preview and data exploration tools continue to evolve as well. While traditional extensions like `ckanext-zippreview` remain widely used, newer tools such as `ckanext-unfold` focus specifically on improving the experience of browsing archive contents. In parallel, structured data inspection is being enhanced by extensions like `ckanext-pygments`, `ckanext-json-viewer`, and `ckanext-tables`, which provide richer, more interactive ways to explore datasets directly in the browser.
+
+{{< carousel images="gallery/*" captions="{parquet.png:The [parquet extension](https://github.com/DataShades/ckanext-parquet), self-info.png:The [selfinfo extension](https://github.com/DataShades/ckanext-selfinfo), pygments.png:The [pygments extension](https://github.com/DataShades/ckanext-pygments), unfold.png:The [unfold extension](https://github.com/DataShades/ckanext-unfold), json-viewer.png:The [json-viewer extension](https://github.com/DataShades/ckanext-json-viewer), block-smith.png:The [blocksmith extension](https://github.com/DataShades/ckanext-blocksmith), tables.png:The [tables extension](https://github.com/DataShades/ckanext-tables)}" interval="2500">}}
+
+<br>
 
 These newer extensions illustrate a continuation of a long-standing pattern: established solutions provide stability and widespread adoption, while newer ones experiment with improved performance, usability, and developer experience. Over time, some of these approaches may replace existing tools, while others will coexist, further expanding the diversity of the CKAN ecosystem.
 
