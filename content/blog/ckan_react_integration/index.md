@@ -3,7 +3,7 @@ title: "Embed React App into CKAN Extension"
 date: 2025-11-25
 draft: false
 tags: ["react", "ckan"]
-categories: ["Development"]
+categories: ["Development", "CKAN"]
 showComments: true
 ---
 
