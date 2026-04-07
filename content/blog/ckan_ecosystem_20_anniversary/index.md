@@ -39,19 +39,19 @@ CKAN wasn't plugin-ready from the start. In its earliest years, the system was a
 
 This work happened under the umbrella of the Open Knowledge Foundation (OKFN), where CKAN originated under the leadership of Rufus Pollock. Once the plugin architecture was in place, experimentation followed quickly. Extensions such as `ckanext-deliverance` (2010) and early versions of `ckanext-disqus` (2010) show that the community wasted no time exploring the separation between core functionality and pluggable components.
 
-## **From Core Feature to Extension (and Back Again)**
+## From Core Feature to Extension (and Back Again)
 
-In the early 2010s, with the plugin system still fresh, the boundary between core and extension was fluid. A notable example is `ckanext-stats`, which began as a standalone extension and was later incorporated into core functionality. This may have been one of the earliest cases where an extension effectively "graduated" into the core system, setting a precedent that continues to this day.
+The first steps toward a plugin system appeared around 2010, but it was CKAN 2.0 that brought full plugin support — a major architectural overhaul that made extensibility a first-class concern rather than an afterthought. The bet was that the community would build things the core team hadn't thought of, and over the following decade, that bet clearly paid off.
+
+Even before 2.0, though, the boundary between core and extension was already fluid. A notable example is `ckanext-stats`, which began as a standalone extension and was later incorporated into core functionality. This may have been one of the earliest cases where an extension effectively "graduated" into the core system, setting a precedent that continues to this day.
 
 Other early components show similar ambiguity. Extensions such as `ckanext-apps` and `ckanext-follower` appear in early OKFN repositories and documentation, with some features later becoming part of core functionality (or disappearing entirely). Even in CKAN 1.3.3b documentation, extensions like Disqus integration, search components, asynchronous queues, and custom forms are explicitly listed as part of the system's extension model. Over time, several of these capabilities either migrated into core or evolved into separate, more specialized implementations.
 
 This period reflects an experimental architecture: features were moved back and forth between core and extension space as their importance, stability, and generality became clearer.
 
-By CKAN 2.0 (2013), the system already shipped with a set of tightly integrated "core extensions," including components such as the DataStore, multilingual support, and multiple resource preview tools. These preview components — covering formats like PDF, JSON, and tabular data — were not static either. Over time, they were replaced or refactored into separate extensions such as `ckanext-pdfview` or newer preview plugins, reflecting ongoing decomposition of core functionality into more maintainable units.
+With CKAN 2.0 (2013), the system shipped with a set of tightly integrated "core extensions," including components such as the DataStore, multilingual support, and multiple resource preview tools. These preview components — covering formats like PDF, JSON, and tabular data — were not static either. Over time, they were replaced or refactored into separate extensions such as `ckanext-pdfview` or newer preview plugins, reflecting ongoing decomposition of core functionality into more maintainable units.
 
 A similar pattern can be observed in data ingestion and harvesting. Early versions of harvesting functionality were initially embedded in core or tightly coupled code paths, before being extracted into `ckanext-harvest` in 2011. The initial commit explicitly describes the goal of consolidating scattered harvesting logic from core and other extensions into a single, dedicated module. This is a clear example of the reverse movement: core → extension.
-
-## Early Signals of a Large and Active Ecosystem
 
 By the early 2010s, extensions such as `ckanext-googleanalytics`, `ckanext-qa`, and `ckanext-harvest` were already active and widely used. Many of these remain in use today, indicating that some early architectural decisions produced long-lived components.
 
@@ -169,19 +169,78 @@ graph LR
 
 Visualization is also being revisited. `ckanext-charts` (2024–present) builds on earlier efforts like `basiccharts` but introduces a more modern and maintainable approach to chart rendering and integration with datasets.
 
+Preview and data exploration tools continue to evolve as well — and this matters more than it might seem at first glance. For many users, the resource preview is the data portal experience. Not everyone downloads a CSV to open in a spreadsheet; often, a quick look at what's inside a file is all that's needed to decide whether a dataset is relevant. Good previews lower the barrier to actually using open data, which is arguably the whole point.
+
+While traditional extensions like `ckanext-zippreview` remain widely used, newer tools such as `ckanext-unfold` focus specifically on improving the experience of browsing archive contents. In parallel, structured data inspection is being enhanced by extensions like `ckanext-pygments`, `ckanext-json-viewer`, and `ckanext-tables`, which provide richer, more interactive ways to explore datasets directly in the browser. The direction is clear: move from "here's a download link" toward "here's the data, explore it right now."
+
+{{< divider >}}
+
+One of the more fundamental challenges in the CKAN ecosystem has always been theming. CKAN's templates have historically been tightly coupled to Bootstrap — class names are hardcoded throughout the markup, which means that changing the underlying CSS framework (or even upgrading Bootstrap itself) requires touching templates across core and every extension. For a platform that prides itself on extensibility, the UI layer has remained surprisingly rigid. This is another area where extensions are now pushing boundaries that core hasn't addressed.
+
+`ckanext-theming` takes an interesting approach to this problem. Instead of templates being hardcoded with framework-specific classes, it introduces a macro-based abstraction layer — templates call semantic helpers like `ui.button()` or `ui.card()`, and the active theme decides how those actually render. Bootstrap 5, Tailwind, Bulma, Pico CSS — in theory, any of them can serve as the backend for the same set of templates.
+
+But this isn't just about swapping CSS frameworks. The deeper value is stability. Today, when CKAN upgrades its core theme or changes its markup, community themes tend to break — especially the ones that haven't been updated in years. Under the macro-based approach, themes that target the abstraction layer rather than raw Bootstrap classes would remain compatible across CKAN upgrades, even if they haven't been touched in 5–8 years. And when something does change in the abstraction contract, `ckanext-theming` includes built-in tooling to detect and report incompatibilities, making the breakage visible and manageable rather than silent.
+
+{{< mermaid >}}
+graph TB
+    subgraph Templates
+        A["Jinja Templates<br/>(dataset, group, etc.)"]
+    end
+
+    subgraph "UI Macros Layer"
+        B["ui.button()"]
+        C["ui.card()"]
+        D["ui.alert()"]
+        E["ui.nav()"]
+    end
+
+    subgraph Theme
+        F["Theme Engine"]
+    end
+
+    subgraph CSS Frameworks
+        G["Bootstrap 5"]
+        H["Tailwind"]
+        I["Bulma"]
+        J["Pico CSS"]
+    end
+
+    A -->|uses| B
+    A -->|uses| C
+    A -->|uses| D
+    A -->|uses| E
+
+    B -->|delegates| F
+    C -->|delegates| F
+    D -->|delegates| F
+    E -->|delegates| F
+
+    F -->|"ckan.ui.theme = bootstrap"| G
+    F -->|"ckan.ui.theme = tailwind"| H
+    F -->|"ckan.ui.theme = bulma"| I
+    F -->|"ckan.ui.theme = bare"| J
+
+    style A fill:#e1f5ff
+    style F fill:#fff3cd
+    style G fill:#d4edda
+    style H fill:#d4edda
+    style I fill:#d4edda
+    style J fill:#d4edda
+{{< /mermaid >}}
+
+The extension is still in early days (version 0.0.1, CKAN 2.12 only), but the codebase is well-structured with proper testing, type checking, and modern Python tooling. It addresses a real pain point for anyone who's tried to maintain a custom CKAN theme across multiple upgrades.
+
+{{< divider >}}
+
 Operational tooling is another area where new extensions are emerging. `ckanext-selfinfo` provides a consolidated, in-UI diagnostics and monitoring layer for CKAN instances, exposing system metrics, configuration state, installed extensions, and runtime errors directly to administrators. It reduces reliance on external logs by centralizing operational visibility within the platform itself.
 
 In a similar direction, `ckanext-admin-panel` represents a broader attempt to rethink CKAN's administrative experience. Rather than exposing scattered configuration screens and CLI-driven workflows, it introduces a more cohesive administrative interface that brings together user management, system monitoring, extension management, and log inspection into a single UI. The extension is positioned as a "next-generation admin interface," aiming to make routine operational tasks more accessible and centralized. It also introduces additional capabilities like runtime configuration editing, effectively turning the admin panel into an extensible control layer for CKAN itself.
 
-Preview and data exploration tools continue to evolve as well. While traditional extensions like `ckanext-zippreview` remain widely used, newer tools such as `ckanext-unfold` focus specifically on improving the experience of browsing archive contents. In parallel, structured data inspection is being enhanced by extensions like `ckanext-pygments`, `ckanext-json-viewer`, and `ckanext-tables`, which provide richer, more interactive ways to explore datasets directly in the browser.
+These newer extensions illustrate a continuation of a long-standing pattern: established solutions provide stability and widespread adoption, while newer ones experiment with improved performance, usability, and developer experience. Over time, some of these approaches may replace existing tools, while others will coexist, further expanding the diversity of the CKAN ecosystem.
 
 {{< carousel images="gallery/*" captions="{parquet.png:The [parquet extension](https://github.com/DataShades/ckanext-parquet), self-info.png:The [selfinfo extension](https://github.com/DataShades/ckanext-selfinfo), pygments.png:The [pygments extension](https://github.com/DataShades/ckanext-pygments), unfold.png:The [unfold extension](https://github.com/DataShades/ckanext-unfold), json-viewer.png:The [json-viewer extension](https://github.com/DataShades/ckanext-json-viewer), block-smith.png:The [blocksmith extension](https://github.com/DataShades/ckanext-blocksmith), tables.png:The [tables extension](https://github.com/DataShades/ckanext-tables)}" interval="2500">}}
 
 <br>
-
-These newer extensions illustrate a continuation of a long-standing pattern: established solutions provide stability and widespread adoption, while newer ones experiment with improved performance, usability, and developer experience. Over time, some of these approaches may replace existing tools, while others will coexist, further expanding the diversity of the CKAN ecosystem.
-
----
 
 ## What's Next?
 
